@@ -1,43 +1,11 @@
 <template>
 	<nav :class="{'is-open': isNavOpen}">
 		<ul>
-			<li class="is-active">
-				<button>
-					🐱‍👓Holiday in Japan
+			<li v-for="(todoList, index) in todoLists" :key="index" v-bind:class="{'is-active' : currentListIndex === index}">
+				<button v-on:click="updateValue(index)">
+					{{todoList.title}}
 					<span>
-						2 / 6
-					</span>
-				</button>
-			</li>
-			<li>
-				<button>
-					🚀 Bucket list
-					<span>
-						3 / 7
-					</span>
-				</button>
-			</li>
-			<li>
-				<button>
-					🥗 Groceries
-					<span>
-						5 / 5
-					</span>
-				</button>
-			</li>
-			<li>
-				<button>
-					📁 Work
-					<span>
-						1 / 2
-					</span>
-				</button>
-			</li>
-			<li>
-				<button>
-					📷 Photography
-					<span>
-						1 / 1
+						{{todoList.items.length}}
 					</span>
 				</button>
 			</li>
@@ -50,12 +18,13 @@
 
 <script>
 export default {
-	props: ['isNavOpen'],
-	data(){
-		return {
-			
-		}
-	}
+	props: ['isNavOpen', 'todoLists', 'currentListIndex'],
+	computed: {},
+	methods: {
+    updateValue(value) {
+	  this.$emit('changeListIndex', value);
+    }
+  }
 }
 </script>
 
