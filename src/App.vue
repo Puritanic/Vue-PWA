@@ -63,9 +63,27 @@ export default {
 			this.isSidebarOpen = false;
 			this.currentTodoIndex = 0;
 		},
-		onEditTodo(index){
+		onEditTodo(index) {
 			this.currentTodoIndex = index;
+		},
+		updateTodoLocalStorage() {
+			localStorage.setItem('todoLocalStorage', JSON.stringify(this.todoLists));
 		}
+	},
+	// Every time we have a change in our todoLists, we will call our updateTodoLocalStorage method.
+	//  As our object has nested values, we want to detect changes inside this values. We can pass deep: true to do so.
+	watch: {
+		todoLists: {
+			handler() {
+				this.updateTodoLocalStorage();
+			},
+			deep: true
+		}
+	},
+	created() {
+		this.todoLists = JSON.parse(
+		localStorage.getItem("todoLocalStorage") || "[]"
+		);
 	},
 	data() {
 		return {
@@ -74,7 +92,7 @@ export default {
 			currentListIndex: 0,
 			currentTodoIndex: 0,
 			sidebarContentToShow: null,
-			todoLists
+			todoLists: []
 		};
 	}
 }
