@@ -24,7 +24,7 @@ export default {
 			this.$emit('changeListIndex', value);
 		},
 		openSidebar(){
-			this.$emit('openSidebar');
+			this.$emit('openSidebar', 'createNewList');
 		}
 	}
 }

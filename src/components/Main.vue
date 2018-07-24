@@ -3,7 +3,7 @@
 		<header :style="`background-image: url(https://source.unsplash.com/featured/?${currentTodo.keyword})`">
 			<div class="header-content">
 				<h1>{{ currentTodo.title }}</h1>
-				<button class="is-primary">Edit list</button>
+				<button class="is-primary" @click="editList">Edit list</button>
 			</div>
 		</header>
 		<ul>
@@ -22,7 +22,12 @@
 
 <script>
 export default {
-	props: ['currentTodo']
+	props: ['currentTodo'],
+	methods: {
+		editList(){
+			this.$emit('editList', 'editList');
+		}
+	}
 }
 </script>
 
