@@ -1,8 +1,8 @@
 <template>
 	<div class="page-container">
 		<app-nav :isNavOpen="isNavOpen" :todoLists="todoLists" :currentListIndex="currentListIndex" @changeListIndex="updateCurrentIndex" @openSidebar="onOpenSidebar"></app-nav>
-		<app-main :currentTodo="todoLists[currentListIndex]" @editList="onOpenSidebar"></app-main>
-		<app-sidebar :sidebarContentToShow="sidebarContentToShow" :isSidebarOpen="isSidebarOpen" @closeSidebar="onCloseSidebar" @createList="onListCreated" @deleteList="onListDelete"></app-sidebar>
+		<app-main :currentTodo="todoLists[currentListIndex]" @editList="onOpenSidebar" @openSidebar="onOpenSidebar" @editTodo="onEditTodo"></app-main>
+		<app-sidebar :sidebarContentToShow="sidebarContentToShow" :todoList="todoLists[currentListIndex]" :todo="todoLists[currentListIndex].items[currentTodoIndex]" :isSidebarOpen="isSidebarOpen" @closeSidebar="onCloseSidebar" @createList="onListCreated" @deleteList="onListDelete" @createTodo="onCreateTodo" @deleteTodo="onDeleteTodo"></app-sidebar>
 		<button class="menu" @click="isNavOpen = !isNavOpen">Menu</button>
 	</div>
 </template>
@@ -45,10 +45,26 @@ export default {
 			this.isNavOpen = false;
 			this.sidebarContentToShow = content;
 		},
-		onListDelete(){
+		onListDelete() {
 			this.todoLists.splice(this.currentListIndex, 1);
 			this.currentListIndex = 0;
 			this.isSidebarOpen = false;
+		},
+		onCreateTodo(data) {
+			this.todoLists[this.currentListIndex].items.push({
+				name: data.name,
+				isCompleted: data.isCompleted
+			});
+
+			this.isSidebarOpen = false;
+		},
+		onDeleteTodo() {
+			this.todoLists[this.currentListIndex].items.splice(this.currentTodoIndex, 1);
+			this.isSidebarOpen = false;
+			this.currentTodoIndex = 0;
+		},
+		onEditTodo(index){
+			this.currentTodoIndex = index;
 		}
 	},
 	data() {
@@ -56,6 +72,7 @@ export default {
 			isNavOpen: false,
 			isSidebarOpen: false,
 			currentListIndex: 0,
+			currentTodoIndex: 0,
 			sidebarContentToShow: null,
 			todoLists
 		};

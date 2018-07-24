@@ -12,37 +12,34 @@
 					<button type="button" class="is-confirm" @click="createList">Create List</button>
 				</div>
 			</form>
-			<form v-if="sidebarContentToShow === 'editList'">
+			<form v-if="sidebarContentToShow === 'editList' && todoList">
 				<h3>Edit list</h3>
 				<label for="listTitle">Title:</label>
-				<input id="listTitle" name="listTitle" placeholder="My amazing next trip to south america" type="text">
+				<input id="listTitle" name="listTitle" type="text" placeholder="My amazing next trip to south america" v-model="todoList.title">
 				<label for="listKeyword">Keyword:</label>
-				<input id="listKeyword" name="listKeyword" placeholder="Colombia" type="text">
+				<input id="listKeyword" name="listKeyword" type="text" placeholder="Colombia" v-model="todoList.keyword">
 				<div class="buttons">
 					<button type="button" class="is-danger" @click="deleteList">Delete list</button>
-					<button type="button" class="is-confirm">Done</button>
+					<button type="button" class="is-confirm" @click="closeSidebar">Done</button>
 				</div>
 			</form>
 			<form v-if="sidebarContentToShow === 'createNewTodo'">
 				<h3>Create a new todo</h3>
-				<label for="todoName">Todo:</label>
-				<input id="todoName" name="todoName" placeholder="Do things..." type="text">
-				<label for="todoCompleted">
-					<input name="todoCompleted" id="todoCompleted" type="checkbox"> Is completed</label>
+				<label for="todoName">Name:</label>
+				<input id="todoName" name="todoName" type="text" placeholder="Do things..." v-model="tempNewTodo.name">
+				<label for="todoCompleted"><input name="todoCompleted" id="todoCompleted" type="checkbox" :checked="tempNewTodo.isCompleted" v-model="tempNewTodo.isCompleted"> Is completed</label>
 				<div class="buttons">
-					<button type="button" class="is-danger">Cancel</button>
-					<button type="button" class="is-confirm">Create todo</button>
+					<button type="button" class="is-confirm" @click="createTodo">Create todo</button>
 				</div>
 			</form>
-			<form v-if="sidebarContentToShow === 'editTodo'">
+			<form v-if="sidebarContentToShow === 'editTodo' && todo">
 				<h3>Edit todo</h3>
 				<label for="todoName">Todo:</label>
-				<input id="todoName" name="todoName" placeholder="Do things..." type="text">
-				<label for="todoCompleted">
-					<input name="todoCompleted" id="todoCompleted" type="checkbox"> Is completed</label>
+				<input id="todoName" name="todoName" type="text" placeholder="Do things..." v-model="todo.name">
+				<label for="todoCompleted"><input name="todoCompleted" id="todoCompleted" type="checkbox" :checked="todo.isCompleted" v-model="todo.isCompleted"> Is completed</label>
 				<div class="buttons">
-					<button type="button" class="is-danger">Delete todo</button>
-					<button type="button" class="is-confirm">Done</button>
+					<button type="button" class="is-danger" @click="deleteTodo">Delete todo</button>
+					<button type="button" class="is-confirm" @click="closeSidebar">Done</button>
 				</div>
 			</form>
 			<button type="button" class="is-danger" @click="closeSidebar">Cancel</button>
@@ -52,13 +49,17 @@
 
 <script>
 export default {
-	props: ['isSidebarOpen', 'sidebarContentToShow'],
+	props: ['isSidebarOpen', 'sidebarContentToShow', 'todoList', 'todo'],
 	data() {
 		return {
 			tempNewList: [{
 				title: null,
 				keyword: null
-			}]
+			}],
+			tempNewTodo: [{
+				name: null,
+				isCompleted: false
+			}],
 		}
 	},
 	methods: {
@@ -87,8 +88,28 @@ export default {
 			this.tempNewList.title = null;
 			this.tempNewList.keyword = null;
 		},
-		deleteList(){
+		deleteList() {
 			this.$emit('deleteList');
+		},
+		createTodo() {
+			let todoName= this.tempNewTodo.name;
+			let todoCompleted = this.tempNewTodo.isCompleted;
+
+			if (todoName == null) {
+				todoName = "🕵️‍ unnamed todo";
+			}
+			const data = {
+				name: todoName,
+				isCompleted: todoCompleted
+			};
+
+			this.$emit('createTodo', data);
+
+			this.tempNewTodo.name = null;
+			this.tempNewTodo.isCompleted = false;
+		},
+		deleteTodo(){
+			this.$emit('deleteTodo')
 		}
 	}
 }

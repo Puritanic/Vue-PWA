@@ -5,7 +5,7 @@
 				<button v-on:click="updateValue(index)">
 					{{todoList.title}}
 					<span>
-						{{todoList.items.length}}
+						{{totalTodosCompleted(index)}} / {{todoList.items.length}}
 					</span>
 				</button>
 			</li>
@@ -25,6 +25,15 @@ export default {
 		},
 		openSidebar(){
 			this.$emit('openSidebar', 'createNewList');
+		},
+		totalTodosCompleted(i){
+			let total = 0;
+			for (let j = 0; j < this.todoLists[i].items.length; j++) {
+				if(this.todoLists[i].items[j].isCompleted){
+					total++;
+				}
+			}
+			return total;
 		}
 	}
 }
