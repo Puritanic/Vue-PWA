@@ -1,5 +1,5 @@
 <template>
-	<div class="sidebar">
+	<div class="sidebar" :class="{'is-open': isSidebarOpen}">
 		<div class="sidebar-content">
 			<!--createNewList-->
 			<form>
@@ -56,7 +56,7 @@
 
 <script>
 export default {
-
+	props: ['isSidebarOpen']
 }
 </script>
 

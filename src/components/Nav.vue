@@ -1,7 +1,7 @@
 <template>
 	<nav :class="{'is-open': isNavOpen}">
 		<ul>
-			<li v-for="(todoList, index) in todoLists" :key="index" v-bind:class="{'is-active' : currentListIndex === index}">
+			<li v-for="(todoList, index) in todoLists" :key="index" :class="{'is-active' : currentListIndex === index}">
 				<button v-on:click="updateValue(index)">
 					{{todoList.title}}
 					<span>
@@ -10,7 +10,7 @@
 				</button>
 			</li>
 			<li>
-				<button class="is-add">Create a new list</button>
+				<button class="is-add" @click="openSidebar">Create a new list</button>
 			</li>
 		</ul>
 	</nav>
@@ -19,12 +19,14 @@
 <script>
 export default {
 	props: ['isNavOpen', 'todoLists', 'currentListIndex'],
-	computed: {},
 	methods: {
-    updateValue(value) {
-	  this.$emit('changeListIndex', value);
-    }
-  }
+		updateValue(value) {
+			this.$emit('changeListIndex', value);
+		},
+		openSidebar(){
+			this.$emit('openSidebar');
+		}
+	}
 }
 </script>
 

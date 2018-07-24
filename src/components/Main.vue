@@ -8,8 +8,8 @@
 		</header>
 		<ul>
 			<li v-for="(todo, index) in currentTodo.items" :key="index" :class="{'is-completed': todo.isCompleted}">
-				<label v-bind:for="`todo${index}`">
-					<input type="checkbox" v-bind:name="`todo${index}`" v-bind:id="`todo${index}`" v-bind:checked="todo.isCompleted" v-model="todo.isCompleted"> {{todo.name}}
+				<label :for="`todo${index}`">
+					<input type="checkbox" :name="`todo${index}`" :id="`todo${index}`" :checked="todo.isCompleted" v-model="todo.isCompleted"> {{todo.name}}
 				</label>
 				<button class="is-danger">Edit todo</button>
 			</li>
